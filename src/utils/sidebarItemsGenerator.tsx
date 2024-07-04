@@ -19,7 +19,6 @@ export const sidebarItemsGenerator = (items: TPaths[], role: string) => {
         }))
       })
     }
-    console.log(acc)
     return acc
   }, [])
   return sidebarItems
