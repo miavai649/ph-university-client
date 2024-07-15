@@ -1,4 +1,4 @@
-import { academicSemesterApi } from '../../../redux/features/academicSemester/academicSemesterApi'
+import { academicSemesterApi } from './../../../redux/features/academicSemester/academicSemesterApi'
 
 const AcademicSemester = () => {
   const { data, isError, isLoading, isSuccess } =
