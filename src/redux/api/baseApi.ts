@@ -8,11 +8,14 @@ import {
 } from '@reduxjs/toolkit/query/react'
 import { RootState } from '../store'
 import { logout, setUser } from '../features/auth/authSlice'
+import { toast } from 'sonner'
 
+// main base query
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://localhost:5000/api/v1',
   credentials: 'include',
   prepareHeaders: (headers, { getState }) => {
+    // preparing headers for request
     const token = (getState() as RootState).auth.token
 
     if (token) {
@@ -22,6 +25,7 @@ const baseQuery = fetchBaseQuery({
   }
 })
 
+// custom base query to catch access token authorization error so that we can send refresh token to get a new access token
 const baseQueryWithRefreshToken: BaseQueryFn<
   FetchArgs,
   BaseQueryApi,
@@ -29,7 +33,14 @@ const baseQueryWithRefreshToken: BaseQueryFn<
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions)
 
+  // checking if the the user is exists or not
+  if (result?.error?.status === 404) {
+    toast.error('User not found')
+  }
+
+  // checking if the user is authenticated or not
   if (result?.error?.status === 401) {
+    // sending refresh token
     const res = await fetch('http://localhost:5000/api/v1/auth/refresh-token', {
       method: 'POST',
       credentials: 'include'
