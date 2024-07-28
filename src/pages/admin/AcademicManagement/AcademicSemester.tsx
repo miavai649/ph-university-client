@@ -1,8 +1,8 @@
-import { academicSemesterApi } from './../../../redux/features/academicSemester/academicSemesterApi'
+import { academicManagementApi } from '../../../redux/features/admin/academicManagement'
 
 const AcademicSemester = () => {
   const { data, isError, isLoading, isSuccess } =
-    academicSemesterApi.useGetAllAcademicSemesterQuery(undefined)
+    academicManagementApi.useGetAllAcademicSemesterQuery(undefined)
   console.log('🚀 ~ AcademicSemester ~ data:', {
     data,
     isError,

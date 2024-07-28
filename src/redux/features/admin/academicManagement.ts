@@ -1,6 +1,6 @@
 import { baseApi } from '../../api/baseApi'
 
-export const academicSemesterApi = baseApi.injectEndpoints({
+export const academicManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllAcademicSemester: builder.query({
       query: () => ({
