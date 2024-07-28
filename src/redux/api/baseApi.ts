@@ -4,7 +4,8 @@ import {
   createApi,
   DefinitionType,
   FetchArgs,
-  fetchBaseQuery
+  fetchBaseQuery,
+  FetchBaseQueryError
 } from '@reduxjs/toolkit/query/react'
 import { RootState } from '../store'
 import { logout, setUser } from '../features/auth/authSlice'
@@ -31,11 +32,16 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   BaseQueryApi,
   DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
-  let result = await baseQuery(args, api, extraOptions)
+  let result: { error?: FetchBaseQueryError } = await baseQuery(
+    args,
+    api,
+    extraOptions
+  )
 
-  // checking if the the user is exists or not
+  // checking if the user exists or not
   if (result?.error?.status === 404) {
-    toast.error('User not found')
+    const errorMessage = (result.error.data as { message: string }).message
+    toast.error(errorMessage)
   }
 
   // checking if the user is authenticated or not
