@@ -6,6 +6,8 @@ import { semesterOptions } from '../../../constants/semester'
 import { monthOptions } from '../../../constants/global'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createSemesterSchema } from '../../../schemas/academicManagement.schema'
+import { academicManagementApi } from '../../../redux/features/admin/academicManagement'
+import { toast } from 'sonner'
 
 const currentYear = new Date().getFullYear()
 const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
@@ -13,11 +15,13 @@ const yearOptions = [0, 1, 2, 3, 4].map((number) => ({
   label: String(currentYear + number)
 }))
 
-// todo : i need to explore zod hook form resolver
-
 const CreateAcademicSemester = () => {
+  // create create academic semester RTK query hook
+  const [addAcademicSemester] =
+    academicManagementApi.useAddAcademicSemesterMutation()
+
   // create academicSemester onSubmit function
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const name = semesterOptions[Number(data?.name) - 1]?.label
 
     const semesterData = {
@@ -27,7 +31,14 @@ const CreateAcademicSemester = () => {
       startMonth: data?.startMonth,
       endMonth: data?.endMonth
     }
-    console.log(semesterData)
+
+    try {
+      console.log(semesterData)
+      const res = await addAcademicSemester(semesterData)
+      console.log('🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ res:', res)
+    } catch (error) {
+      toast.error('Something went wrong')
+    }
   }
 
   return (
