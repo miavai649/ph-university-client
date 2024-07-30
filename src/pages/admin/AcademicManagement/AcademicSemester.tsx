@@ -1,19 +1,33 @@
 import { Table, TableColumnsType, TableProps } from 'antd'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement'
 import { TAcademicSemester } from '../../../types/academicManagement.type'
-import { useState } from 'react'
+import { CSSProperties, useState } from 'react'
+import { SyncLoader } from 'react-spinners'
+import { TQueryParams } from '../../../types'
 
 export type TTableData = Pick<
   TAcademicSemester,
-  'name' | '_id' | 'year' | 'startMonth' | 'endMonth'
+  'name' | 'year' | 'startMonth' | 'endMonth'
 >
+
+const spinnerContainer: CSSProperties = {
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100vh'
+}
 
 const AcademicSemester = () => {
   // search params state
-  const [params, setParams] = useState([])
+  const [params, setParams] = useState<TQueryParams[] | undefined>(undefined)
 
-  const { data: semesterData } =
-    academicManagementApi.useGetAllAcademicSemesterQuery(params)
+  const {
+    data: semesterData,
+    isLoading,
+    isFetching
+  } = academicManagementApi.useGetAllAcademicSemesterQuery(params)
+
+  console.log({ isLoading, isFetching })
 
   const tableData = semesterData?.data?.map(
     ({ _id, name, year, startMonth, endMonth }) => ({
@@ -73,28 +87,37 @@ const AcademicSemester = () => {
   ]
 
   const onChange: TableProps<TTableData>['onChange'] = (
-    pagination,
+    _pagination,
     filters,
-    sorter,
+    _sorter,
     extra
   ) => {
     if (extra?.action === 'filter') {
-      const queryParams = []
+      const queryParams: TQueryParams[] = []
 
       filters?.name?.forEach((item) =>
-        queryParams.push({ name: 'name', item: item })
+        queryParams.push({ name: 'name', value: item })
       )
 
       filters?.year?.forEach((item) =>
-        queryParams.push({ name: 'year', item: item })
+        queryParams.push({ name: 'year', value: item })
       )
 
       setParams(queryParams)
     }
   }
 
+  if (isLoading) {
+    return (
+      <div style={spinnerContainer}>
+        <SyncLoader color='#001529' />
+      </div>
+    )
+  }
+
   return (
     <Table
+      loading={isFetching}
       columns={columns}
       dataSource={tableData}
       onChange={onChange}
