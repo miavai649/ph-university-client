@@ -1,6 +1,7 @@
 import { Table, TableColumnsType, TableProps } from 'antd'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement'
 import { TAcademicSemester } from '../../../types/academicManagement.type'
+import { useState } from 'react'
 
 export type TTableData = Pick<
   TAcademicSemester,
@@ -8,19 +9,21 @@ export type TTableData = Pick<
 >
 
 const AcademicSemester = () => {
+  // search params state
+  const [params, setParams] = useState([])
+
   const { data: semesterData } =
-    academicManagementApi.useGetAllAcademicSemesterQuery(undefined)
+    academicManagementApi.useGetAllAcademicSemesterQuery(params)
 
   const tableData = semesterData?.data?.map(
     ({ _id, name, year, startMonth, endMonth }) => ({
-      _id,
+      key: _id,
       name,
       year,
       startMonth,
       endMonth
     })
   )
-  console.log(tableData)
 
   const columns: TableColumnsType<TTableData> = [
     {
@@ -28,32 +31,36 @@ const AcademicSemester = () => {
       dataIndex: 'name',
       filters: [
         {
-          text: 'Joe',
-          value: 'Joe'
+          text: 'Autumn',
+          value: 'Autumn'
         },
         {
-          text: 'Jim',
-          value: 'Jim'
+          text: 'Summer',
+          value: 'Summer'
         },
         {
-          text: 'Submenu',
-          value: 'Submenu',
-          children: [
-            {
-              text: 'Green',
-              value: 'Green'
-            },
-            {
-              text: 'Black',
-              value: 'Black'
-            }
-          ]
+          text: 'Fall',
+          value: 'Fall'
         }
       ]
     },
     {
       title: 'Year',
-      dataIndex: 'year'
+      dataIndex: 'year',
+      filters: [
+        {
+          text: '2023',
+          value: '2023'
+        },
+        {
+          text: '2024',
+          value: '2024'
+        },
+        {
+          text: '2025',
+          value: '2025'
+        }
+      ]
     },
     {
       title: 'Start Month',
@@ -71,7 +78,19 @@ const AcademicSemester = () => {
     sorter,
     extra
   ) => {
-    console.log('params', pagination, filters, sorter, extra)
+    if (extra?.action === 'filter') {
+      const queryParams = []
+
+      filters?.name?.forEach((item) =>
+        queryParams.push({ name: 'name', item: item })
+      )
+
+      filters?.year?.forEach((item) =>
+        queryParams.push({ name: 'year', item: item })
+      )
+
+      setParams(queryParams)
+    }
   }
 
   return (
