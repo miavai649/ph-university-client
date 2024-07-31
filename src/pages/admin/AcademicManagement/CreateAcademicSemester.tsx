@@ -42,7 +42,7 @@ const CreateAcademicSemester = () => {
       if (res?.error) {
         toast.error(res?.error?.data?.message, { id: toastId })
       } else {
-        toast.error('Semester created successfully', { id: toastId })
+        toast.success('Semester created successfully', { id: toastId })
       }
     } catch (error) {
       toast.error('Something went wrong', { id: toastId })
