@@ -1,5 +1,6 @@
 import { BaseQueryApi } from '@reduxjs/toolkit/query'
-import React from 'react'
+import React, { ReactNode } from 'react'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
 
 export type TError = {
   data: {
@@ -30,4 +31,26 @@ export type TResponseRedux<T> = TResponse<T> & BaseQueryApi
 export type TQueryParams = {
   name: string
   value: boolean | React.Key
+}
+
+export type TFormConfig = {
+  defaultValues?: Record<string, any>
+  resolver?: any
+}
+
+export type TFormProps = {
+  onSubmit: SubmitHandler<FieldValues>
+  children: ReactNode
+} & TFormConfig
+
+export type TInputProps = {
+  type: string
+  name: string
+  label?: string
+}
+
+export type TSelectProps = {
+  label: string
+  name: string
+  options: { value: string; label: string; disabled?: boolean }[]
 }

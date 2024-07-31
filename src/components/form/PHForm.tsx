@@ -1,21 +1,6 @@
 import { Form } from 'antd'
-import { ReactNode } from 'react'
-import {
-  FieldValues,
-  FormProvider,
-  SubmitHandler,
-  useForm
-} from 'react-hook-form'
-
-type TFormConfig = {
-  defaultValues?: Record<string, any>
-  resolver?: any
-}
-
-type TFormProps = {
-  onSubmit: SubmitHandler<FieldValues>
-  children: ReactNode
-} & TFormConfig
+import { FormProvider, useForm } from 'react-hook-form'
+import { TFormConfig, TFormProps } from '../../types'
 
 const PHForm = ({
   onSubmit,

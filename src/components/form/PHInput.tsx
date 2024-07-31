@@ -1,11 +1,6 @@
 import { Form, Input } from 'antd'
 import { Controller } from 'react-hook-form'
-
-type TInputProps = {
-  type: string
-  name: string
-  label?: string
-}
+import { TInputProps } from '../../types'
 
 const PHInput = ({ type, name, label }: TInputProps) => {
   return (

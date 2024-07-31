@@ -1,11 +1,6 @@
 import { Form, Select } from 'antd'
 import { Controller } from 'react-hook-form'
-
-type TSelectProps = {
-  label: string
-  name: string
-  options: { value: string; label: string; disabled?: boolean }[]
-}
+import { TSelectProps } from '../../types'
 
 const PHSelect = ({ label, name, options }: TSelectProps) => {
   return (
