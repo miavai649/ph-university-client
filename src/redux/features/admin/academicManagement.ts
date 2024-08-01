@@ -40,6 +40,12 @@ export const academicManagementApi = baseApi.injectEndpoints({
         method: 'POST',
         body: data
       })
+    }),
+    getAllAcademicFaculty: builder.query({
+      query: () => ({
+        url: '/academic-faculties',
+        method: 'GET'
+      })
     })
   })
 })
