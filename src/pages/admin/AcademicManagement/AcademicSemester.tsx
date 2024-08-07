@@ -116,13 +116,16 @@ const AcademicSemester = () => {
   }
 
   return (
-    <Table
-      loading={isFetching}
-      columns={columns}
-      dataSource={tableData}
-      onChange={onChange}
-      showSorterTooltip={{ target: 'sorter-icon' }}
-    />
+    <div>
+      <h1 style={{ marginBottom: '1rem' }}>Academic Semesters</h1>
+      <Table
+        loading={isFetching}
+        columns={columns}
+        dataSource={tableData}
+        onChange={onChange}
+        showSorterTooltip={{ target: 'sorter-icon' }}
+      />
+    </div>
   )
 }
 
