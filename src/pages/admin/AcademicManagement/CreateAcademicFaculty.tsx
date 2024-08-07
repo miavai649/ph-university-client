@@ -19,7 +19,7 @@ const CreateAcademicFaculty = () => {
     }
 
     try {
-      const res = await addAcademicFaculty(facultyData)
+      await addAcademicFaculty(facultyData)
 
       toast.success('Faculty created successfully', { id: toastId })
     } catch (error) {
