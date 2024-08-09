@@ -1,14 +1,9 @@
 import { Table, TableColumnsType, TableProps } from 'antd'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement'
-import { TAcademicSemester } from '../../../types/academicManagement.type'
+import { TAcademicSemesterTableData } from '../../../types/academicManagement.type'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
 import { TQueryParams } from '../../../types'
-
-export type TTableData = Pick<
-  TAcademicSemester,
-  'name' | 'year' | 'startMonth' | 'endMonth'
->
 
 const spinnerContainer: CSSProperties = {
   display: 'flex',
@@ -27,8 +22,6 @@ const AcademicSemester = () => {
     isFetching
   } = academicManagementApi.useGetAllAcademicSemesterQuery(params)
 
-  console.log({ isLoading, isFetching })
-
   const tableData = semesterData?.data?.map(
     ({ _id, name, year, startMonth, endMonth }) => ({
       key: _id,
@@ -39,7 +32,7 @@ const AcademicSemester = () => {
     })
   )
 
-  const columns: TableColumnsType<TTableData> = [
+  const columns: TableColumnsType<TAcademicSemesterTableData> = [
     {
       title: 'Name',
       dataIndex: 'name',
@@ -86,7 +79,7 @@ const AcademicSemester = () => {
     }
   ]
 
-  const onChange: TableProps<TTableData>['onChange'] = (
+  const onChange: TableProps<TAcademicSemesterTableData>['onChange'] = (
     _pagination,
     filters,
     _sorter,

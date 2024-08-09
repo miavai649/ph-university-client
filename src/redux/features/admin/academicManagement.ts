@@ -45,11 +45,20 @@ export const academicManagementApi = baseApi.injectEndpoints({
       })
     }),
     getAllAcademicFaculty: builder.query({
-      query: () => ({
-        url: '/academic-faculties',
-        method: 'GET'
-      }),
-      transformResponse: (response: TResponseRedux<TAcademicFaculty>) => {
+      query: (args) => {
+        const params = new URLSearchParams()
+
+        if (args) {
+          params.append(args.name, args.value)
+        }
+
+        return {
+          url: '/academic-faculties',
+          method: 'GET',
+          params: params
+        }
+      },
+      transformResponse: (response: TResponseRedux<TAcademicFaculty[]>) => {
         return {
           data: response?.data,
           meta: response?.meta
