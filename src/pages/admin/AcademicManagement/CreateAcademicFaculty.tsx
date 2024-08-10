@@ -4,7 +4,7 @@ import { FieldValues, SubmitHandler } from 'react-hook-form'
 import PHInput from '../../../components/form/PHInput'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createAcademicFacultySchema } from '../../../schemas/academicManagement.schema'
-import { academicManagementApi } from '../../../redux/features/admin/academicManagement'
+import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import { toast } from 'sonner'
 
 const CreateAcademicFaculty = () => {
