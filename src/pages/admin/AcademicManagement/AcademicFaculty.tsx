@@ -1,4 +1,4 @@
-import { Table, TableColumnsType, TableProps } from 'antd'
+import { Button, Table, TableColumnsType, TableProps } from 'antd'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement'
 import { TAcademicFacultyTableData } from '../../../types/academicManagement.type'
 import { TQueryParams } from '../../../types'
@@ -18,17 +18,31 @@ const AcademicFaculty = () => {
 
   const columns: TableColumnsType<TAcademicFacultyTableData> = [
     {
+      key: 'name',
       title: 'Name',
       dataIndex: 'name'
     },
     {
+      key: 'date',
       title: 'Date',
       dataIndex: 'date',
       sorter: true
     },
     {
+      key: 'time',
       title: 'Time',
       dataIndex: 'time'
+    },
+    {
+      key: '*',
+      title: 'Action',
+      render: () => {
+        return (
+          <div>
+            <Button>Update</Button>
+          </div>
+        )
+      }
     }
   ]
 
