@@ -28,21 +28,24 @@ export const academicManagementApi = baseApi.injectEndpoints({
           data: response.data,
           meta: response.meta
         }
-      }
+      },
+      providesTags: ['academicSemester']
     }),
     addAcademicSemester: builder.mutation({
       query: (data) => ({
         url: '/academic-semesters/create-academic-semester',
         method: 'POST',
         body: data
-      })
+      }),
+      invalidatesTags: ['academicSemester']
     }),
     addAcademicFaculty: builder.mutation({
       query: (data) => ({
         url: '/academic-faculties/create-academic-faculty',
         method: 'POST',
         body: data
-      })
+      }),
+      invalidatesTags: ['academicFaculty']
     }),
     getAllAcademicFaculty: builder.query({
       query: (args) => {
@@ -63,7 +66,8 @@ export const academicManagementApi = baseApi.injectEndpoints({
           data: response?.data,
           meta: response?.meta
         }
-      }
+      },
+      providesTags: ['academicFaculty']
     })
   })
 })
