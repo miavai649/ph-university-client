@@ -18,7 +18,7 @@ const Login = () => {
 
   const defaultValues = {
     userId: 'A-0001',
-    password: 'admin123'
+    password: 'admin1234'
   }
 
   const onSubmit = async (data: FieldValues) => {
