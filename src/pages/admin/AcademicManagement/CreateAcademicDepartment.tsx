@@ -6,19 +6,43 @@ import { academicManagementApi } from '../../../redux/features/admin/academicMan
 import PHSelect from '../../../components/form/PHSelect'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createAcademicDepartmentSchema } from '../../../schemas/academicManagement.schema'
+import { toast } from 'sonner'
+import { TResponse } from '../../../types'
+import { TAcademicDepartment } from '../../../types/academicManagement.type'
 
 const CreateAcademicDepartment = () => {
   const { data: facultyData, isLoading } =
     academicManagementApi.useGetAllAcademicFacultyQuery(undefined)
 
-  const facultyOptions =
-    facultyData?.data?.map((faculty) => ({
-      value: faculty?._id,
-      label: faculty?.name
-    })) || []
+  const facultyOptions = facultyData?.data?.map((faculty) => ({
+    value: faculty?._id,
+    label: faculty?.name
+  }))
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data)
+  const [addAcademicDepartment] =
+    academicManagementApi.useAddAcademicDepartmentMutation()
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading('Creating...')
+
+    const departmentData = {
+      name: data?.name,
+      academicFaculty: data?.academicFaculty
+    }
+
+    try {
+      const res = (await addAcademicDepartment(
+        departmentData
+      )) as TResponse<TAcademicDepartment>
+
+      if (res?.error) {
+        toast.error(res?.error?.data?.message, { id: toastId })
+      } else {
+        toast.success('Department created successfully', { id: toastId })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { id: toastId })
+    }
   }
 
   return (

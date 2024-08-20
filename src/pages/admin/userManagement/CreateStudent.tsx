@@ -6,6 +6,7 @@ import PHSelect from '../../../components/form/PHSelect'
 import { bloodGroupOptions, genderOptions } from '../../../constants/global'
 import PHDatePicker from '../../../components/form/PHDatePicker'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
+import { userManagementApi } from '../../../redux/features/admin/userManagement.api'
 
 const studentData = {
   password: 'student123',
@@ -51,14 +52,14 @@ const studentData = {
 
 const studentDefaultValues = {
   name: {
-    firstName: 'Shihab',
-    middleName: 'Al',
-    lastName: 'Emran'
+    firstName: 'Maruf',
+    middleName: 'Hasnaeen',
+    lastName: 'Khan'
   },
   gender: 'male',
   bloogGroup: 'A+',
 
-  email: 'student2@gmail.com',
+  email: 'khan@gmail.com',
   contactNo: '1235678',
   emergencyContactNo: '987-654-3210',
   presentAddress: '123 Main St, Cityville',
@@ -80,25 +81,49 @@ const studentDefaultValues = {
     address: '789 Pine St, Villageton'
   },
 
-  admissionSemester: '65b0104110b74fcbd7a25d92',
-  academicDepartment: '65b00fb010b74fcbd7a25d8e'
+  admissionSemester: '66c4dda81ee0fadf2877dc1a',
+  academicDepartment: '66bbbd1e275e178b27250e39'
 }
 
 const CreateStudent = () => {
-  const { data: semesterData, isLoading: semesterIsLoading } =
+  // getting academic semester data via redux rtk query
+  const { data: sData, isLoading: sIsLoading } =
     academicManagementApi.useGetAllAcademicSemesterQuery(undefined)
 
-  const semesterOptions =
-    semesterData?.data?.map(({ _id, name, year }) => ({
-      value: _id,
-      label: `${name}-${year}`
-    })) || []
+  // getting academic department data via redux rtk query
+  const { data: dData, isLoading: dIsLoading } =
+    academicManagementApi.useGetAllAcademicDepartmentQuery(undefined, {
+      skip: sIsLoading
+    })
 
+  // making semester options for semester select input field
+  const semesterOptions = sData?.data?.map((item) => ({
+    value: item._id,
+    label: `${item.name} ${item.year}`
+  }))
+
+  // making department options for department select input field
+  const departmentOptions = dData?.data?.map(({ _id, name }) => ({
+    value: _id,
+    label: name
+  }))
+
+  // using redux rtk query for create new student
+  const [addStudent] = userManagementApi.useAddStudentsMutation()
+
+  // submission form for create a new student
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data)
-    // const formData = new FormData()
+    const studentData = {
+      password: 'student123',
+      student: data
+    }
 
-    // formData.append('data', JSON.stringify(data))
+    const formData = new FormData()
+
+    formData.append('data', JSON.stringify(studentData))
+
+    // creating new student
+    addStudent(formData)
 
     // ! This is for development
     // ! Just for checking
@@ -249,10 +274,18 @@ const CreateStudent = () => {
           <Row gutter={8}>
             <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
               <PHSelect
-                label='Academic Faculty'
-                name='academicFaculty'
+                label='Admission Semester'
+                name='admissionSemester'
                 options={semesterOptions}
-                disabled={semesterIsLoading}
+                disabled={sIsLoading}
+              />
+            </Col>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHSelect
+                label='Academic Department'
+                name='academicDepartment'
+                options={departmentOptions}
+                disabled={dIsLoading}
               />
             </Col>
           </Row>

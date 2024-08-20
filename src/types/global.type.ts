@@ -53,5 +53,5 @@ export type TSelectProps = {
   label: string
   name: string
   disabled?: boolean
-  options: { value: string; label: string; disabled?: boolean }[]
+  options: { value: string; label: string; disabled?: boolean }[] | undefined
 }

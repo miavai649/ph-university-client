@@ -1,5 +1,6 @@
 import { TQueryParams, TResponseRedux } from '../../../types'
 import {
+  TAcademicDepartment,
   TAcademicFaculty,
   TAcademicSemester
 } from '../../../types/academicManagement.type'
@@ -68,6 +69,36 @@ export const academicManagementApi = baseApi.injectEndpoints({
         }
       },
       providesTags: ['academicFaculty']
+    }),
+    addAcademicDepartment: builder.mutation({
+      query: (data) => ({
+        url: '/academic-departments/create-academic-department',
+        method: 'POST',
+        body: data
+      }),
+      invalidatesTags: ['academicDepartment']
+    }),
+    getAllAcademicDepartment: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams()
+
+        if (args) {
+          params.append(args.name, args.value)
+        }
+
+        return {
+          url: '/academic-departments',
+          method: 'GET',
+          params: params
+        }
+      },
+      transformResponse: (response: TResponseRedux<TAcademicDepartment[]>) => {
+        return {
+          data: response?.data,
+          meta: response?.meta
+        }
+      },
+      providesTags: ['academicDepartment']
     })
   })
 })

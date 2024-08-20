@@ -6,6 +6,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createAcademicFacultySchema } from '../../../schemas/academicManagement.schema'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import { toast } from 'sonner'
+import { TResponse } from '../../../types'
+import { TAcademicFaculty } from '../../../types/academicManagement.type'
 
 const CreateAcademicFaculty = () => {
   const [addAcademicFaculty] =
@@ -19,11 +21,16 @@ const CreateAcademicFaculty = () => {
     }
 
     try {
-      await addAcademicFaculty(facultyData)
-
-      toast.success('Faculty created successfully', { id: toastId })
+      const res = (await addAcademicFaculty(
+        facultyData
+      )) as TResponse<TAcademicFaculty>
+      if (res?.error) {
+        toast.error(res?.error?.data?.message, { id: toastId })
+      } else {
+        toast.success('Faculty created successfully', { id: toastId })
+      }
     } catch (error) {
-      toast.success('Something went wrong', { id: toastId })
+      toast.error('Something went wrong', { id: toastId })
     }
   }
 
