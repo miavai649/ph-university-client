@@ -3,11 +3,16 @@ import { academicManagementApi } from '../../../redux/features/admin/academicMan
 import { TAcademicFacultyTableData } from '../../../types/academicManagement.type'
 import { TQueryParams } from '../../../types'
 import { useState } from 'react'
+import { spinnerContainer } from './AcademicSemester'
+import { SyncLoader } from 'react-spinners'
 
 const AcademicFaculty = () => {
   const [params, setParams] = useState<TQueryParams | undefined>(undefined)
-  const { data: facultyData, isFetching } =
-    academicManagementApi.useGetAllAcademicFacultyQuery(params)
+  const {
+    data: facultyData,
+    isLoading,
+    isFetching
+  } = academicManagementApi.useGetAllAcademicFacultyQuery(params)
 
   const tableData = facultyData?.data?.map(({ _id, name, createdAt }) => ({
     key: _id,
@@ -59,6 +64,14 @@ const AcademicFaculty = () => {
     } else if (sortOrder === 'descend') {
       setParams({ name: 'sort', value: '-createdAt' })
     }
+  }
+
+  if (isLoading) {
+    return (
+      <div style={spinnerContainer}>
+        <SyncLoader color='#001529' />
+      </div>
+    )
   }
 
   return (

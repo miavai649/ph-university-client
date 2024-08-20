@@ -5,7 +5,7 @@ import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
 import { TQueryParams } from '../../../types'
 
-const spinnerContainer: CSSProperties = {
+export const spinnerContainer: CSSProperties = {
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
