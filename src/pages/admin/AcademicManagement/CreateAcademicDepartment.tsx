@@ -4,6 +4,8 @@ import PHInput from '../../../components/form/PHInput'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import PHSelect from '../../../components/form/PHSelect'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { createAcademicDepartmentSchema } from '../../../schemas/academicManagement.schema'
 
 const CreateAcademicDepartment = () => {
   const { data: facultyData } =
@@ -23,7 +25,9 @@ const CreateAcademicDepartment = () => {
     <Flex justify='center'>
       <Col span={6}>
         <h1 style={{ marginBottom: '1rem' }}>Create Academic Department</h1>
-        <PHForm onSubmit={onSubmit}>
+        <PHForm
+          onSubmit={onSubmit}
+          resolver={zodResolver(createAcademicDepartmentSchema)}>
           <PHInput type='text' name='name' label='Name' />
           <PHSelect
             label='Academic Faculty'

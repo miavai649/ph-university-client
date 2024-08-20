@@ -10,3 +10,8 @@ export const createAcademicSemesterSchema = z.object({
 export const createAcademicFacultySchema = z.object({
   name: z.string({ required_error: 'Please enter a name' })
 })
+
+export const createAcademicDepartmentSchema = z.object({
+  name: z.string({ required_error: 'Please enter a name' }),
+  academicFaculty: z.string({ required_error: 'Please select a faculty' })
+})
