@@ -5,6 +5,7 @@ import { Button, Col, Divider, Row } from 'antd'
 import PHSelect from '../../../components/form/PHSelect'
 import { bloodGroupOptions, genderOptions } from '../../../constants/global'
 import PHDatePicker from '../../../components/form/PHDatePicker'
+import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 
 const studentData = {
   password: 'student123',
@@ -84,6 +85,15 @@ const studentDefaultValues = {
 }
 
 const CreateStudent = () => {
+  const { data: semesterData, isLoading: semesterIsLoading } =
+    academicManagementApi.useGetAllAcademicSemesterQuery(undefined)
+
+  const semesterOptions =
+    semesterData?.data?.map(({ _id, name, year }) => ({
+      value: _id,
+      label: `${name}-${year}`
+    })) || []
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data)
     // const formData = new FormData()
@@ -236,6 +246,16 @@ const CreateStudent = () => {
 
           {/* .......... academic information ........... */}
           <Divider>Academic Info.</Divider>
+          <Row gutter={8}>
+            <Col span={24} md={{ span: 12 }} lg={{ span: 8 }}>
+              <PHSelect
+                label='Academic Faculty'
+                name='academicFaculty'
+                options={semesterOptions}
+                disabled={semesterIsLoading}
+              />
+            </Col>
+          </Row>
 
           <Button htmlType='submit'>Submit</Button>
         </PHForm>

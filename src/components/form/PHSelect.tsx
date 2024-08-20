@@ -2,7 +2,7 @@ import { Form, Select } from 'antd'
 import { Controller } from 'react-hook-form'
 import { TSelectProps } from '../../types'
 
-const PHSelect = ({ label, name, options }: TSelectProps) => {
+const PHSelect = ({ label, name, options, disabled }: TSelectProps) => {
   return (
     <Controller
       name={name}
@@ -11,6 +11,7 @@ const PHSelect = ({ label, name, options }: TSelectProps) => {
           <Select
             style={{ width: '100%', marginBottom: '4px' }}
             {...field}
+            disabled={disabled}
             options={options}
             size='large'
           />

@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createAcademicDepartmentSchema } from '../../../schemas/academicManagement.schema'
 
 const CreateAcademicDepartment = () => {
-  const { data: facultyData } =
+  const { data: facultyData, isLoading } =
     academicManagementApi.useGetAllAcademicFacultyQuery(undefined)
 
   const facultyOptions =
@@ -32,6 +32,7 @@ const CreateAcademicDepartment = () => {
           <PHSelect
             label='Academic Faculty'
             name='academicFaculty'
+            disabled={isLoading}
             options={facultyOptions}
           />
           <Button htmlType='submit'>Submit</Button>
