@@ -7,41 +7,41 @@ import { bloodGroupOptions, genderOptions } from '../../../constants/global'
 import PHDatePicker from '../../../components/form/PHDatePicker'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import { userManagementApi } from '../../../redux/features/admin/userManagement.api'
+import { toast } from 'sonner'
+import { TResponse } from '../../../types'
+import { TStudent } from '../../../types/userManagement.type'
 
 // ! This is only for development
 // ! Should be removed
 
 const studentDefaultValues = {
   name: {
-    firstName: 'Hridoy',
-    lastName: 'Mojumdar'
+    firstName: 'Michael',
+    middleName: 'Andrew',
+    lastName: 'Brown'
   },
   gender: 'male',
-  bloogGroup: 'A+',
-
-  email: 'hridoy@gmail.com',
-  contactNo: '1235678',
-  emergencyContactNo: '987-654-3210',
-  presentAddress: '123 Main St, Cityville',
-  permanentAddress: '456 Oak St, Townsville',
-
+  email: 'michael.brown@example.com',
+  contactNo: '3456789012',
+  emergencyContactNo: '234-567-8901',
+  bloogGroup: 'A-',
+  presentAddress: '123 Pine St, Willowbrook',
+  permanentAddress: '456 Spruce St, Ridgefield',
   guardian: {
-    fatherName: 'James Doe',
-    fatherOccupation: 'Engineer',
-    fatherContactNo: '111-222-3333',
-    motherName: 'Mary Doe',
-    motherOccupation: 'Teacher',
-    motherContactNo: '444-555-6666'
+    fatherName: 'Thomas Brown',
+    fatherOccupation: 'Sales Director',
+    fatherContactNo: '444-555-6666',
+    motherName: 'Linda Brown',
+    motherOccupation: 'HR Manager',
+    motherContactNo: '777-888-9999'
   },
-
   localGuardian: {
-    name: 'Alice Johnson',
-    occupation: 'Doctor',
-    contactNo: '777-888-9999',
-    address: '789 Pine St, Villageton'
+    name: 'Karen White',
+    occupation: 'Pharmacist',
+    contactNo: '111-222-3333',
+    address: '789 Cedar St, Oakridge'
   },
-
-  admissionSemester: '66c4dda81ee0fadf2877dc1a',
+  admissionSemester: '66c4de0e1ee0fadf2877dc25',
   academicDepartment: '66bbbd1e275e178b27250e39'
 }
 
@@ -72,7 +72,8 @@ const CreateStudent = () => {
   const [addStudent] = userManagementApi.useAddStudentsMutation()
 
   // submission form for create a new student
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading('Student Creating...')
     const studentData = {
       password: 'student123',
       student: data
@@ -84,7 +85,17 @@ const CreateStudent = () => {
     formData.append('file', data.image)
 
     // creating new student
-    addStudent(formData)
+
+    try {
+      const res = (await addStudent(formData)) as TResponse<TStudent>
+      if (res?.error) {
+        toast.error('Failed to create student', { id: toastId })
+      } else {
+        toast.success('Student created successfully', { id: toastId })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { id: toastId })
+    }
 
     // ! This is for development
     // console.log(Object.fromEntries(formData))

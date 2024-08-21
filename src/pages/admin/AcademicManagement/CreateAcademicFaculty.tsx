@@ -25,7 +25,7 @@ const CreateAcademicFaculty = () => {
         facultyData
       )) as TResponse<TAcademicFaculty>
       if (res?.error) {
-        toast.error(res?.error?.data?.message, { id: toastId })
+        toast.error('Failed to create faculty', { id: toastId })
       } else {
         toast.success('Faculty created successfully', { id: toastId })
       }

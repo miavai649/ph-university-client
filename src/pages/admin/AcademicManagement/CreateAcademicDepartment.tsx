@@ -36,7 +36,7 @@ const CreateAcademicDepartment = () => {
       )) as TResponse<TAcademicDepartment>
 
       if (res?.error) {
-        toast.error(res?.error?.data?.message, { id: toastId })
+        toast.error('Failed to created department', { id: toastId })
       } else {
         toast.success('Department created successfully', { id: toastId })
       }

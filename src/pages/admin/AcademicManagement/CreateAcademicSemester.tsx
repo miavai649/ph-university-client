@@ -40,7 +40,7 @@ const CreateAcademicSemester = () => {
         semesterData
       )) as TResponse<TAcademicSemester>
       if (res?.error) {
-        toast.error(res?.error?.data?.message, { id: toastId })
+        toast.error('Failed to create semester', { id: toastId })
       } else {
         toast.success('Semester created successfully', { id: toastId })
       }
