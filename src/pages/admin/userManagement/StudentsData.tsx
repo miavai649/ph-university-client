@@ -9,11 +9,7 @@ import {
 } from 'antd'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import {
-  TAcademicSemesterTableData,
-  TQueryParams,
-  TStudent
-} from '../../../types'
+import { TQueryParams, TStudent } from '../../../types'
 
 export const spinnerContainer: CSSProperties = {
   display: 'flex',
@@ -22,7 +18,10 @@ export const spinnerContainer: CSSProperties = {
   height: '100vh'
 }
 
-export type TStudentTableData = Pick<TStudent, 'fullName' | 'id'>
+export type TStudentTableData = Pick<
+  TStudent,
+  'fullName' | 'id' | 'email' | 'contactNo'
+>
 
 const StudentsData = () => {
   // search params state
@@ -44,11 +43,15 @@ const StudentsData = () => {
   const metaData = studentData?.meta
 
   // table data
-  const tableData = studentData?.data?.map(({ _id, fullName, id }) => ({
-    key: _id,
-    fullName,
-    id
-  }))
+  const tableData = studentData?.data?.map(
+    ({ _id, fullName, id, email, contactNo }) => ({
+      key: _id,
+      fullName,
+      id,
+      email,
+      contactNo
+    })
+  )
 
   const columns: TableColumnsType<TStudentTableData> = [
     {
@@ -57,9 +60,19 @@ const StudentsData = () => {
       dataIndex: 'fullName'
     },
     {
-      key: 'Roll No.',
-      title: 'id',
+      key: 'id',
+      title: 'Roll No.',
       dataIndex: 'id'
+    },
+    {
+      key: 'email',
+      title: 'Email',
+      dataIndex: 'email'
+    },
+    {
+      key: 'contactNo',
+      title: 'Contact No.',
+      dataIndex: 'contactNo'
     },
     {
       key: '*',
