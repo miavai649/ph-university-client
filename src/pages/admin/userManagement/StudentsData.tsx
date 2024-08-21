@@ -1,5 +1,12 @@
 import { userManagementApi } from '../../../redux/features/admin/userManagement.api'
-import { Button, Space, Table, TableColumnsType, TableProps } from 'antd'
+import {
+  Button,
+  Pagination,
+  Space,
+  Table,
+  TableColumnsType,
+  TableProps
+} from 'antd'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
 import {
@@ -19,14 +26,24 @@ export type TStudentTableData = Pick<TStudent, 'fullName' | 'id'>
 
 const StudentsData = () => {
   // search params state
-  const [params, setParams] = useState<TQueryParams[] | undefined>(undefined)
+  const [params, setParams] = useState<TQueryParams[]>([])
+  const [page, setPage] = useState(1)
 
   const {
     data: studentData,
     isLoading,
     isFetching
-  } = userManagementApi.useGetAllStudentsQuery(params)
+  } = userManagementApi.useGetAllStudentsQuery([
+    { name: 'limit', value: 3 },
+    { name: 'page', value: page },
+    { name: 'sort', value: 'id' },
+    ...params
+  ])
 
+  // meta data
+  const metaData = studentData?.meta
+
+  // table data
   const tableData = studentData?.data?.map(({ _id, fullName, id }) => ({
     key: _id,
     fullName,
@@ -86,6 +103,14 @@ const StudentsData = () => {
         dataSource={tableData}
         onChange={onChange}
         showSorterTooltip={{ target: 'sorter-icon' }}
+        pagination={false}
+      />
+      <Pagination
+        style={{ marginTop: '1rem' }}
+        current={page}
+        pageSize={metaData?.limit}
+        total={metaData?.total}
+        onChange={(value) => setPage(value)}
       />
     </div>
   )
