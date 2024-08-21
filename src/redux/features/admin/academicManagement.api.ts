@@ -1,9 +1,11 @@
-import { TQueryParams, TResponseRedux } from '../../../types'
 import {
   TAcademicDepartment,
   TAcademicFaculty,
-  TAcademicSemester
-} from '../../../types/academicManagement.type'
+  TAcademicSemester,
+  TQueryParams,
+  TResponseRedux
+} from '../../../types'
+
 import { baseApi } from '../../api/baseApi'
 
 export const academicManagementApi = baseApi.injectEndpoints({

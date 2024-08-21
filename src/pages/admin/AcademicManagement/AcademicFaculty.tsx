@@ -1,7 +1,6 @@
 import { Button, Table, TableColumnsType, TableProps } from 'antd'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
-import { TAcademicFacultyTableData } from '../../../types/academicManagement.type'
-import { TQueryParams } from '../../../types'
+import { TAcademicFacultyTableData, TQueryParams } from '../../../types'
 import { useState } from 'react'
 import { spinnerContainer } from './AcademicSemester'
 import { SyncLoader } from 'react-spinners'

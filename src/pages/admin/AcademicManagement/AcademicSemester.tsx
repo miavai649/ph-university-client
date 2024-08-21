@@ -1,9 +1,8 @@
 import { Button, Table, TableColumnsType, TableProps } from 'antd'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
-import { TAcademicSemesterTableData } from '../../../types/academicManagement.type'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import { TQueryParams } from '../../../types'
+import { TAcademicSemesterTableData, TQueryParams } from '../../../types'
 
 export const spinnerContainer: CSSProperties = {
   display: 'flex',

@@ -8,41 +8,40 @@ import PHDatePicker from '../../../components/form/PHDatePicker'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import { userManagementApi } from '../../../redux/features/admin/userManagement.api'
 import { toast } from 'sonner'
-import { TResponse } from '../../../types'
-import { TStudent } from '../../../types/userManagement.type'
+import { TResponse, TStudent } from '../../../types'
 
 // ! This is only for development
 // ! Should be removed
 
 const studentDefaultValues = {
   name: {
-    firstName: 'Michael',
-    middleName: 'Andrew',
-    lastName: 'Brown'
+    firstName: 'Emily',
+    middleName: 'Grace',
+    lastName: 'Davis'
   },
-  gender: 'male',
-  email: 'michael.brown@example.com',
-  contactNo: '3456789012',
-  emergencyContactNo: '234-567-8901',
-  bloogGroup: 'A-',
-  presentAddress: '123 Pine St, Willowbrook',
-  permanentAddress: '456 Spruce St, Ridgefield',
+  gender: 'female',
+  email: 'emily.davis@example.com',
+  contactNo: '9876543210',
+  emergencyContactNo: '123-456-7890',
+  bloogGroup: 'O+',
+  presentAddress: '789 Birch St, Pleasantville',
+  permanentAddress: '123 Cedar St, Springfield',
   guardian: {
-    fatherName: 'Thomas Brown',
-    fatherOccupation: 'Sales Director',
-    fatherContactNo: '444-555-6666',
-    motherName: 'Linda Brown',
-    motherOccupation: 'HR Manager',
-    motherContactNo: '777-888-9999'
+    fatherName: 'Michael Davis',
+    fatherOccupation: 'Doctor',
+    fatherContactNo: '999-888-7777',
+    motherName: 'Sarah Davis',
+    motherOccupation: 'Professor',
+    motherContactNo: '666-555-4444'
   },
   localGuardian: {
-    name: 'Karen White',
-    occupation: 'Pharmacist',
-    contactNo: '111-222-3333',
-    address: '789 Cedar St, Oakridge'
+    name: 'Rachel Green',
+    occupation: 'Architect',
+    contactNo: '555-444-3333',
+    address: '654 Walnut St, Brookhaven'
   },
-  admissionSemester: '66c4de0e1ee0fadf2877dc25',
-  academicDepartment: '66bbbd1e275e178b27250e39'
+  admissionSemester: '66c4dda81ee0fadf2877dc1a',
+  academicDepartment: '66c4efd31ee0fadf2877dc4c'
 }
 
 const CreateStudent = () => {

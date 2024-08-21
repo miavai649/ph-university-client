@@ -7,8 +7,7 @@ import PHSelect from '../../../components/form/PHSelect'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createAcademicDepartmentSchema } from '../../../schemas/academicManagement.schema'
 import { toast } from 'sonner'
-import { TResponse } from '../../../types'
-import { TAcademicDepartment } from '../../../types/academicManagement.type'
+import { TAcademicDepartment, TResponse } from '../../../types'
 
 const CreateAcademicDepartment = () => {
   const { data: facultyData, isLoading } =

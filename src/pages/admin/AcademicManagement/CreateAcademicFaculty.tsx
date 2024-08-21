@@ -6,8 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createAcademicFacultySchema } from '../../../schemas/academicManagement.schema'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import { toast } from 'sonner'
-import { TResponse } from '../../../types'
-import { TAcademicFaculty } from '../../../types/academicManagement.type'
+import { TAcademicFaculty, TResponse } from '../../../types'
 
 const CreateAcademicFaculty = () => {
   const [addAcademicFaculty] =

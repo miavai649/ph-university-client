@@ -7,8 +7,7 @@ import { monthOptions } from '../../../constants/global'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import { toast } from 'sonner'
-import { TResponse } from '../../../types'
-import { TAcademicSemester } from '../../../types/academicManagement.type'
+import { TAcademicSemester, TResponse } from '../../../types'
 import { createAcademicSemesterSchema } from '../../../schemas/academicManagement.schema'
 
 const currentYear = new Date().getFullYear()
