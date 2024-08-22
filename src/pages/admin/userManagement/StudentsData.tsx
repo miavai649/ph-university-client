@@ -10,6 +10,7 @@ import {
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
 import { TQueryParams, TStudent } from '../../../types'
+import { Link } from 'react-router-dom'
 
 export const spinnerContainer: CSSProperties = {
   display: 'flex',
@@ -33,7 +34,6 @@ const StudentsData = () => {
     isLoading,
     isFetching
   } = userManagementApi.useGetAllStudentsQuery([
-    { name: 'limit', value: 3 },
     { name: 'page', value: page },
     { name: 'sort', value: 'id' },
     ...params
@@ -77,10 +77,12 @@ const StudentsData = () => {
     {
       key: '*',
       title: 'Action',
-      render: () => {
+      render: (item) => {
         return (
           <Space>
-            <Button>Details</Button>
+            <Link to={`/admin/student-details/${item?.key}`}>
+              <Button>Details</Button>
+            </Link>
             <Button>Update</Button>
             <Button>Block</Button>
           </Space>
