@@ -6,7 +6,7 @@ import { spinnerContainer } from './AcademicSemester'
 import { SyncLoader } from 'react-spinners'
 
 const AcademicFaculty = () => {
-  const [params, setParams] = useState<TQueryParams | undefined>(undefined)
+  const [params, setParams] = useState<TQueryParams[]>([])
   const {
     data: facultyData,
     isLoading,
@@ -59,9 +59,9 @@ const AcademicFaculty = () => {
     const sortOrder = Array.isArray(sorter) ? sorter[0]?.order : sorter?.order
 
     if (sortOrder === 'ascend') {
-      setParams({ name: 'sort', value: 'createdAt' })
+      setParams([{ name: 'sort', value: 'createdAt' }])
     } else if (sortOrder === 'descend') {
-      setParams({ name: 'sort', value: '-createdAt' })
+      setParams([{ name: 'sort', value: '-createdAt' }])
     }
   }
 

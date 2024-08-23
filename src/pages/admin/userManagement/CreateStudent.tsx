@@ -47,7 +47,9 @@ const studentDefaultValues = {
 const CreateStudent = () => {
   // getting academic semester data via redux rtk query
   const { data: sData, isLoading: sIsLoading } =
-    academicManagementApi.useGetAllAcademicSemesterQuery(undefined)
+    academicManagementApi.useGetAllAcademicSemesterQuery([
+      { name: 'sort', value: 'year' }
+    ])
 
   // getting academic department data via redux rtk query
   const { data: dData, isLoading: dIsLoading } =

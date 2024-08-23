@@ -13,7 +13,7 @@ export const spinnerContainer: CSSProperties = {
 
 const AcademicSemester = () => {
   // search params state
-  const [params, setParams] = useState<TQueryParams[] | undefined>(undefined)
+  const [params, setParams] = useState<TQueryParams[]>([])
 
   const {
     data: semesterData,
