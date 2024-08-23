@@ -1,9 +1,10 @@
 import { Button, Dropdown, Table, TableColumnsType, Tag } from 'antd'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import { TSemester } from '../../../types'
+import { TResponse, TSemester } from '../../../types'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
 import moment from 'moment'
+import { toast } from 'sonner'
 
 export const spinnerContainer: CSSProperties = {
   display: 'flex',
@@ -54,14 +55,25 @@ const RegisteredSemesters = () => {
     })
   )
 
-  const handleMenuClick = (data: any) => {
+  const handleMenuClick = async (data: any) => {
+    const toastId = toast.loading('Updating...')
     const updateData = {
       id: semesterId,
       data: {
         status: data.key
       }
     }
-    updateSemesterStatus(updateData)
+
+    try {
+      const res = (await updateSemesterStatus(updateData)) as TResponse<any>
+      if (res?.error) {
+        toast.error(res.error.data.message, { id: toastId })
+      } else {
+        toast.success(`Semester updated to ${data.key}`, { id: toastId })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { id: toastId })
+    }
   }
 
   const menuProps = {
