@@ -1,15 +1,8 @@
 import { userManagementApi } from '../../../redux/features/admin/userManagement.api'
-import {
-  Button,
-  Pagination,
-  Space,
-  Table,
-  TableColumnsType,
-  TableProps
-} from 'antd'
+import { Button, Pagination, Space, Table, TableColumnsType } from 'antd'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import { TQueryParams, TStudent } from '../../../types'
+import { TStudent } from '../../../types'
 import { Link } from 'react-router-dom'
 
 export const spinnerContainer: CSSProperties = {
@@ -26,7 +19,6 @@ export type TStudentTableData = Pick<
 
 const StudentsData = () => {
   // search params state
-  const [params, setParams] = useState<TQueryParams[]>([])
   const [page, setPage] = useState(1)
 
   const {
@@ -35,8 +27,7 @@ const StudentsData = () => {
     isFetching
   } = userManagementApi.useGetAllStudentsQuery([
     { name: 'page', value: page },
-    { name: 'sort', value: 'id' },
-    ...params
+    { name: 'sort', value: 'id' }
   ])
 
   // meta data
@@ -92,14 +83,14 @@ const StudentsData = () => {
     }
   ]
 
-  const onChange: TableProps<TStudentTableData>['onChange'] = (
-    _pagination,
-    filters,
-    _sorter,
-    extra
-  ) => {
-    console.log({ filters, extra })
-  }
+  // const onChange: TableProps<TStudentTableData>['onChange'] = (
+  //   _pagination,
+  //   filters,
+  //   _sorter,
+  //   extra
+  // ) => {
+  //   console.log({ filters, extra })
+  // }
 
   if (isLoading) {
     return (
@@ -116,7 +107,7 @@ const StudentsData = () => {
         loading={isFetching}
         columns={columns}
         dataSource={tableData}
-        onChange={onChange}
+        // onChange={onChange}
         showSorterTooltip={{ target: 'sorter-icon' }}
         pagination={false}
       />
