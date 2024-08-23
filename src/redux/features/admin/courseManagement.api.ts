@@ -71,6 +71,14 @@ export const courseManagementApi = baseApi.injectEndpoints({
           meta: response.meta
         }
       }
+    }),
+    addCourse: builder.mutation({
+      query: (data) => ({
+        url: '/courses/create-course',
+        method: 'POST',
+        body: data
+      }),
+      invalidatesTags: ['course']
     })
   })
 })

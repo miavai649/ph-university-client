@@ -3,12 +3,8 @@ import PHForm from '../../../components/form/PHForm'
 import { Button, Col, Flex } from 'antd'
 import PHSelect from '../../../components/form/PHSelect'
 import { toast } from 'sonner'
-import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
-import PHDatePicker from '../../../components/form/PHDatePicker'
 import PHInput from '../../../components/form/PHInput'
-import { semesterStatusOptions } from '../../../constants/semester'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
-import { TResponse } from '../../../types'
 
 const CreateCourse = () => {
   const [registerSemester] =
@@ -27,15 +23,20 @@ const CreateCourse = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading('Creating...')
 
-    const registerSemesterData = {
+    const courseData = {
       ...data,
-      minCredit: Number(data.minCredit),
-      maxCredit: Number(data.maxCredit)
+      code: Number(data.code),
+      credits: Number(data.credits),
+      isDeleted: false,
+      preRequisiteCourses: data.preRequisiteCourses
+        ? data.preRequisiteCourses?.map((item: string) => ({
+            course: item,
+            isDeleted: false
+          }))
+        : []
     }
-    console.log(
-      '🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ registerSemesterData:',
-      registerSemesterData
-    )
+
+    console.log(courseData)
 
     // try {
     //   const res = (await registerSemester(
@@ -58,8 +59,8 @@ const CreateCourse = () => {
         <PHForm onSubmit={onSubmit}>
           <PHInput name='title' label='Title' type='text' />
           <PHInput name='prefix' label='Prefix' type='text' />
-          <PHInput name='code' label='Code' type='text' />
-          <PHInput name='credits' label='Credits' type='text' />
+          <PHInput name='code' label='Code' type='number' />
+          <PHInput name='credits' label='Credits' type='number' />
           <PHSelect
             label='Pre Requisite Courses'
             name='preRequisiteCourses'

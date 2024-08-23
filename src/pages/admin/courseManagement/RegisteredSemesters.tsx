@@ -54,7 +54,7 @@ const RegisteredSemesters = () => {
     })
   )
 
-  const handleMenuClick = (data) => {
+  const handleMenuClick = (data: any) => {
     const updateData = {
       id: semesterId,
       data: {
