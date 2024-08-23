@@ -7,8 +7,13 @@ import { academicManagementApi } from '../../../redux/features/admin/academicMan
 import PHDatePicker from '../../../components/form/PHDatePicker'
 import PHInput from '../../../components/form/PHInput'
 import { semesterStatusOptions } from '../../../constants/semester'
+import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
+import { TResponse } from '../../../types'
 
 const SemesterRegistration = () => {
+  const [registerSemester] =
+    courseManagementApi.useAddRegisteredSemesterMutation()
+
   // getting academic semester data via redux rtk query
   const { data: academicSemester, isLoading: sIsLoading } =
     academicManagementApi.useGetAllAcademicSemesterQuery([
@@ -25,26 +30,24 @@ const SemesterRegistration = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading('Creating...')
 
-    const semesterData = {
-      ...data
+    const registerSemesterData = {
+      ...data,
+      minCredit: Number(data.minCredit),
+      maxCredit: Number(data.maxCredit)
     }
-    console.log(
-      '🚀 ~ constonSubmit:SubmitHandler<FieldValues>= ~ semesterData:',
-      semesterData
-    )
 
-    // try {
-    //   const res = (await addAcademicSemester(
-    //     semesterData
-    //   )) as TResponse<TAcademicSemester>
-    //   if (res?.error) {
-    //     toast.error('Failed to create semester', { id: toastId })
-    //   } else {
-    //     toast.success('Semester created successfully', { id: toastId })
-    //   }
-    // } catch (error) {
-    //   toast.error('Something went wrong', { id: toastId })
-    // }
+    try {
+      const res = (await registerSemester(
+        registerSemesterData
+      )) as TResponse<any>
+      if (res?.error) {
+        toast.error(res.error.data.message, { id: toastId })
+      } else {
+        toast.success('Semester created successfully', { id: toastId })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { id: toastId })
+    }
   }
   return (
     <Flex justify='center' align='center'>
