@@ -74,6 +74,7 @@ export const baseApi = createApi({
     'academicSemester',
     'academicFaculty',
     'academicDepartment',
-    'students'
+    'students',
+    'registeredSemester'
   ]
 })
