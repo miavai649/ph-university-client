@@ -1,8 +1,9 @@
-import { Button, Table, TableColumnsType } from 'antd'
-import { CSSProperties } from 'react'
+import { Button, Dropdown, Table, TableColumnsType, Tag } from 'antd'
+import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
 import { TSemester } from '../../../types'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
+import moment from 'moment'
 
 export const spinnerContainer: CSSProperties = {
   display: 'flex',
@@ -16,22 +17,57 @@ export type TSemesterTableData = Pick<
   'status' | 'startDate' | 'endDate'
 >
 
+const items = [
+  {
+    key: 'UPCOMING',
+    label: 'Upcoming'
+  },
+  {
+    key: 'ONGOING',
+    label: 'Ongoing'
+  },
+  {
+    key: 'ENDED',
+    label: 'Ended'
+  }
+]
+
 const RegisteredSemesters = () => {
+  const [semesterId, setSemesterId] = useState('')
+
   const {
     data: semesterData,
     isLoading,
     isFetching
   } = courseManagementApi.useGetAllRegisteredSemestersQuery(undefined)
 
+  const [updateSemesterStatus] =
+    courseManagementApi.useUpdateRegisteredSemesterMutation()
+
   const tableData = semesterData?.data?.map(
     ({ _id, academicSemester, status, startDate, endDate }) => ({
       key: _id,
       name: `${academicSemester.name} ${academicSemester.year}`,
       status,
-      startDate,
-      endDate
+      startDate: moment(new Date(startDate)).format('MMMM'),
+      endDate: moment(new Date(endDate)).format('MMMM')
     })
   )
+
+  const handleMenuClick = (data) => {
+    const updateData = {
+      id: semesterId,
+      data: {
+        status: data.key
+      }
+    }
+    updateSemesterStatus(updateData)
+  }
+
+  const menuProps = {
+    items,
+    onClick: handleMenuClick
+  }
 
   const columns: TableColumnsType<TSemesterTableData> = [
     {
@@ -42,7 +78,22 @@ const RegisteredSemesters = () => {
     {
       key: 'status',
       title: 'Status',
-      dataIndex: 'status'
+      dataIndex: 'status',
+      render: (item) => {
+        let color
+
+        if (item === 'UPCOMING') {
+          color = 'blue'
+        }
+        if (item === 'ONGOING') {
+          color = 'green'
+        }
+        if (item === 'ENDED') {
+          color = 'red'
+        }
+
+        return <Tag color={color}>{item}</Tag>
+      }
     },
     {
       key: 'startDate',
@@ -57,11 +108,11 @@ const RegisteredSemesters = () => {
     {
       key: '*',
       title: 'Action',
-      render: () => {
+      render: (item) => {
         return (
-          <div>
-            <Button>Update</Button>
-          </div>
+          <Dropdown menu={menuProps} trigger={['click']}>
+            <Button onClick={() => setSemesterId(item?.key)}>Update</Button>
+          </Dropdown>
         )
       }
     }
@@ -82,7 +133,6 @@ const RegisteredSemesters = () => {
         loading={isFetching}
         columns={columns}
         dataSource={tableData}
-        // onChange={onChange}
         showSorterTooltip={{ target: 'sorter-icon' }}
       />
     </div>
