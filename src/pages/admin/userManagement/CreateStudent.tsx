@@ -60,7 +60,7 @@ const CreateStudent = () => {
   // making semester options for semester select input field
   const semesterOptions = sData?.data?.map((item) => ({
     value: item._id,
-    label: `${item.name} ${item.year}`
+    label: `${item.name}-${item.year}`
   }))
 
   // making department options for department select input field
