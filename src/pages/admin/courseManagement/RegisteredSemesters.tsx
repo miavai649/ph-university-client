@@ -1,4 +1,4 @@
-const RegisteredSemester = () => {
+const RegisteredSemesters = () => {
   return (
     <div>
       <h1>This is RegisteredSemester component</h1>
@@ -6,4 +6,4 @@ const RegisteredSemester = () => {
   )
 }
 
-export default RegisteredSemester
+export default RegisteredSemesters
