@@ -5,10 +5,10 @@ import PHSelect from '../../../components/form/PHSelect'
 import { toast } from 'sonner'
 import PHInput from '../../../components/form/PHInput'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
+import { TResponse } from '../../../types'
 
 const CreateCourse = () => {
-  const [registerSemester] =
-    courseManagementApi.useAddRegisteredSemesterMutation()
+  const [addCourse] = courseManagementApi.useAddCourseMutation()
 
   // making pre requisite courses options
   const { data: courses, isLoading: cLoading } =
@@ -38,18 +38,16 @@ const CreateCourse = () => {
 
     console.log(courseData)
 
-    // try {
-    //   const res = (await registerSemester(
-    //     registerSemesterData
-    //   )) as TResponse<any>
-    //   if (res?.error) {
-    //     toast.error(res.error.data.message, { id: toastId })
-    //   } else {
-    //     toast.success('Semester created successfully', { id: toastId })
-    //   }
-    // } catch (error) {
-    //   toast.error('Something went wrong', { id: toastId })
-    // }
+    try {
+      const res = (await addCourse(courseData)) as TResponse<any>
+      if (res?.error) {
+        toast.error(res.error.data.message, { id: toastId })
+      } else {
+        toast.success('Course created successfully', { id: toastId })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { id: toastId })
+    }
   }
   return (
     <Flex justify='center' align='center'>
