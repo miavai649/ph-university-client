@@ -58,7 +58,11 @@ const CreateAcademicDepartment = () => {
             disabled={isLoading}
             options={facultyOptions}
           />
-          <Button htmlType='submit'>Submit</Button>
+          <Button
+            style={{ background: '#001529', color: 'white' }}
+            htmlType='submit'>
+            Submit
+          </Button>
         </PHForm>
       </Col>
     </Flex>

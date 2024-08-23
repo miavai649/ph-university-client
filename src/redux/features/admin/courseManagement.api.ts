@@ -1,4 +1,9 @@
-import { TQueryParams, TResponseRedux, TSemester } from '../../../types'
+import {
+  TCourse,
+  TQueryParams,
+  TResponseRedux,
+  TSemester
+} from '../../../types'
 import { baseApi } from '../../api/baseApi'
 
 export const courseManagementApi = baseApi.injectEndpoints({
@@ -42,6 +47,30 @@ export const courseManagementApi = baseApi.injectEndpoints({
         body: args?.data
       }),
       invalidatesTags: ['registeredSemester']
+    }),
+    getAllCourses: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams()
+
+        if (args) {
+          args.forEach((item: TQueryParams) => {
+            params.append(item.name, item.value as string)
+          })
+        }
+
+        return {
+          url: '/courses',
+          method: 'GET',
+          params: params
+        }
+      },
+      providesTags: ['course'],
+      transformResponse: (response: TResponseRedux<TCourse[]>) => {
+        return {
+          data: response.data,
+          meta: response.meta
+        }
+      }
     })
   })
 })
