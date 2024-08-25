@@ -44,6 +44,11 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     toast.error(errorMessage)
   }
 
+  if (result?.error?.status === 403) {
+    const errorMessage = (result.error.data as { message: string }).message
+    toast.error(errorMessage)
+  }
+
   // checking if the user is authenticated or not
   if (result?.error?.status === 401) {
     // sending refresh token
