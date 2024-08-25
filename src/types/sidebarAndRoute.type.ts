@@ -14,7 +14,7 @@ export type TRoute = {
 }
 
 export type TPaths = {
-  name: string
+  name?: string
   path?: string
   element?: ReactNode
   children?: TPaths[]
