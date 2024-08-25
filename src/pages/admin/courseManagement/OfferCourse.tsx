@@ -11,7 +11,7 @@ import PHSelectWithWatch from '../../../components/form/PHSelectWithWatch'
 import { useState } from 'react'
 import moment from 'moment'
 import { toast } from 'sonner'
-import { TCourseFaculties, TResponseRedux } from '../../../types'
+import { TCourseFaculties, TResponse } from '../../../types'
 
 const OfferCourse = () => {
   const [courseId, setCourseId] = useState('')
@@ -81,7 +81,7 @@ const OfferCourse = () => {
     try {
       const res = (await createOfferCourse(
         offerCourseData
-      )) as TResponseRedux<TCourseFaculties>
+      )) as TResponse<TCourseFaculties>
 
       if (res?.error) {
         toast.error(res.error.data.message, { id: toastId })

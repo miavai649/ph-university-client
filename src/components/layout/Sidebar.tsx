@@ -5,7 +5,6 @@ import { facultyPaths } from '../../routes/faculty.routes'
 import { studentPaths } from '../../routes/student.routes'
 import { useAppSelector } from '../../redux/hooks'
 import {
-  selectCurrentUser,
   TUserDecoded,
   useCurrentToken
 } from '../../redux/features/auth/authSlice'

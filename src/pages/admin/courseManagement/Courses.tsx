@@ -1,7 +1,7 @@
 import { Button, Modal, Table } from 'antd'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import { TCourse, TResponseRedux } from '../../../types'
+import { TCourse, TResponse } from '../../../types'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
 import PHForm from '../../../components/form/PHForm'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
@@ -107,7 +107,7 @@ const AddFacultyModal = ({ facultyInfo }: any) => {
     }
 
     try {
-      const res = (await addFaculties(facultyData)) as TResponseRedux<any>
+      const res = (await addFaculties(facultyData)) as TResponse<any>
 
       if (res?.error) {
         toast.error(res.error.data.message, { id: toastId })
