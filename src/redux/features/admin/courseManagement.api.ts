@@ -1,5 +1,6 @@
 import {
   TCourse,
+  TCourseFaculties,
   TQueryParams,
   TResponseRedux,
   TSemester
@@ -95,7 +96,7 @@ export const courseManagementApi = baseApi.injectEndpoints({
           method: 'GET'
         }
       },
-      transformResponse: (response: TResponseRedux<any>) => {
+      transformResponse: (response: TResponseRedux<TCourseFaculties>) => {
         return {
           data: response.data,
           meta: response.meta

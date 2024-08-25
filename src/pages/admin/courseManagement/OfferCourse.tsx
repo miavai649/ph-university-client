@@ -9,10 +9,10 @@ import { daysOptions } from '../../../constants/global'
 import PHTimePicker from '../../../components/form/PHTimePicker'
 import PHSelectWithWatch from '../../../components/form/PHSelectWithWatch'
 import { useState } from 'react'
+import moment from 'moment'
 
 const OfferCourse = () => {
   const [courseId, setCourseId] = useState('')
-  console.log('🚀 ~ OfferCourse ~ courseId:', courseId)
 
   const { data: semesterRegistrationData } =
     courseManagementApi.useGetAllRegisteredSemestersQuery([
@@ -28,6 +28,11 @@ const OfferCourse = () => {
 
   const { data: courseData } =
     courseManagementApi.useGetAllCoursesQuery(undefined)
+
+  const { data: facultiesData, isFetching: facultyFetching } =
+    courseManagementApi.useGetCourseFacultiesQuery(courseId, {
+      skip: !courseId
+    })
 
   const semesterRegistrationOptions = semesterRegistrationData?.data?.map(
     (item) => ({
@@ -53,8 +58,21 @@ const OfferCourse = () => {
     label: item.title
   }))
 
+  const facultyOptions = facultiesData?.data?.faculties?.map((item) => ({
+    value: item._id,
+    label: item.fullName
+  }))
+
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data)
+    const offerCourseData = {
+      ...data,
+      section: Number(data.section),
+      maxCapacity: Number(data.maxCapacity),
+      startTime: moment(new Date(data.startTime)).format('HH:mm'),
+      endTime: moment(new Date(data.endTime)).format('HH:mm')
+    }
+
+    console.log(offerCourseData)
   }
 
   return (
@@ -84,7 +102,12 @@ const OfferCourse = () => {
             name='course'
             options={courseOptions}
           />
-          <PHSelect label='Faculty' name='faculty' options={[]} />
+          <PHSelect
+            disabled={!courseId || facultyFetching}
+            label='Faculty'
+            name='faculty'
+            options={facultyOptions}
+          />
           <PHInput label='Section' name='section' type='text' />
           <PHInput label='Max Capacity' name='maxCapacity' type='text' />
           <PHSelect
