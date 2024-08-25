@@ -10,9 +10,13 @@ import PHTimePicker from '../../../components/form/PHTimePicker'
 import PHSelectWithWatch from '../../../components/form/PHSelectWithWatch'
 import { useState } from 'react'
 import moment from 'moment'
+import { toast } from 'sonner'
+import { TCourseFaculties, TResponseRedux } from '../../../types'
 
 const OfferCourse = () => {
   const [courseId, setCourseId] = useState('')
+
+  const [createOfferCourse] = courseManagementApi.useCreateOfferCourseMutation()
 
   const { data: semesterRegistrationData } =
     courseManagementApi.useGetAllRegisteredSemestersQuery([
@@ -63,7 +67,9 @@ const OfferCourse = () => {
     label: item.fullName
   }))
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading('Creating...')
+
     const offerCourseData = {
       ...data,
       section: Number(data.section),
@@ -72,7 +78,19 @@ const OfferCourse = () => {
       endTime: moment(new Date(data.endTime)).format('HH:mm')
     }
 
-    console.log(offerCourseData)
+    try {
+      const res = (await createOfferCourse(
+        offerCourseData
+      )) as TResponseRedux<TCourseFaculties>
+
+      if (res?.error) {
+        toast.error(res.error.data.message, { id: toastId })
+      } else {
+        toast.success('Semester created successfully', { id: toastId })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { id: toastId })
+    }
   }
 
   return (
