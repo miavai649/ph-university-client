@@ -27,6 +27,27 @@ export type TStudent = {
   fullName: string
 }
 
+export type TFaculty = {
+  _id: string
+  id: string
+  user: string
+  designation: string
+  name: TName
+  gender: string
+  dateOfBirth: string
+  email: string
+  contactNo: string
+  emergencyContactNo: string
+  bloogGroup: string
+  presentAddress: string
+  permanentAddress: string
+  profileImg: string
+  academicDepartment: TAcademicDepartment
+  academicFaculty: TAcademicFaculty
+  isDeleted: boolean
+  fullName: string
+}
+
 export type TUser = {
   _id: string
   id: string
@@ -42,6 +63,7 @@ export type TUser = {
 
 export type TName = {
   firstName: string
+  middleName: string
   lastName: string
   _id: string
 }

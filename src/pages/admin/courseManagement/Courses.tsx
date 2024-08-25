@@ -1,8 +1,13 @@
 import { Button, Modal, Table } from 'antd'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import { TCourse } from '../../../types'
+import { TCourse, TResponse, TResponseRedux } from '../../../types'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
+import PHForm from '../../../components/form/PHForm'
+import { FieldValues, SubmitHandler } from 'react-hook-form'
+import { userManagementApi } from '../../../redux/features/admin/userManagement.api'
+import PHSelect from '../../../components/form/PHSelect'
+import { toast } from 'sonner'
 
 export const spinnerContainer: CSSProperties = {
   display: 'flex',
@@ -40,12 +45,8 @@ const Courses = () => {
     {
       key: '*',
       title: 'Action',
-      render: () => {
-        return (
-          <div>
-            <Button>Assign Faculty</Button>
-          </div>
-        )
+      render: (item: any) => {
+        return <AddFacultyModal facultyInfo={item} />
       },
       width: '1%'
     }
@@ -72,7 +73,17 @@ const Courses = () => {
   )
 }
 
-const AddFacultyModal = () => {
+const AddFacultyModal = ({ facultyInfo }: any) => {
+  const { data: facultyData } =
+    userManagementApi.useGetAllFacultyQuery(undefined)
+
+  const [addFaculties] = courseManagementApi.useAddFacultiesMutation()
+
+  const facultyOptions = facultyData?.data?.map((item) => ({
+    value: item._id,
+    label: item?.fullName
+  }))
+
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   const showModal = () => {
@@ -87,19 +98,50 @@ const AddFacultyModal = () => {
     setIsModalOpen(false)
   }
 
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast.loading('Adding...')
+
+    const facultyData = {
+      courseId: facultyInfo.key,
+      data
+    }
+
+    try {
+      const res = (await addFaculties(facultyData)) as TResponseRedux<any>
+
+      if (res?.error) {
+        toast.error(res.error.data.message, { id: toastId })
+      } else {
+        toast.success('Faculties added successfully', { id: toastId })
+      }
+    } catch (error) {
+      toast.error('Something went wrong', { id: toastId })
+    }
+
+    handleOk()
+  }
+
   return (
     <>
-      <Button type='primary' onClick={showModal}>
-        Open Modal
-      </Button>
+      <Button onClick={showModal}>Add Faculty</Button>
       <Modal
         title='Basic Modal'
         open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        onCancel={handleCancel}
+        footer={null}>
+        <PHForm onSubmit={onSubmit}>
+          <PHSelect
+            name='faculties'
+            label='Faculties'
+            options={facultyOptions}
+            mode='multiple'
+          />
+          <Button
+            style={{ background: '#001529', color: 'white' }}
+            htmlType='submit'>
+            Submit
+          </Button>
+        </PHForm>
       </Modal>
     </>
   )
