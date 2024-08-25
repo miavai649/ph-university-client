@@ -1,7 +1,6 @@
 import { Button, Col, Flex } from 'antd'
 import { academicManagementApi } from '../../../redux/features/admin/academicManagement.api'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
-import { userManagementApi } from '../../../redux/features/admin/userManagement.api'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
 import PHForm from '../../../components/form/PHForm'
 import PHSelect from '../../../components/form/PHSelect'
@@ -29,9 +28,6 @@ const OfferCourse = () => {
 
   const { data: courseData } =
     courseManagementApi.useGetAllCoursesQuery(undefined)
-
-  const { data: facultyData } =
-    userManagementApi.useGetAllFacultyQuery(undefined)
 
   const semesterRegistrationOptions = semesterRegistrationData?.data?.map(
     (item) => ({

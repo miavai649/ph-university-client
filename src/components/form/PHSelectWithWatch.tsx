@@ -1,6 +1,6 @@
 import { Form, Select } from 'antd'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
-import { TSelectProps, TSelectWithWatchProps } from '../../types'
+import { TSelectWithWatchProps } from '../../types'
 import { useEffect } from 'react'
 
 const PHSelectWithWatch = ({
