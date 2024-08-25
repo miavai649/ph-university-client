@@ -1,7 +1,7 @@
 import { Button, Modal, Table } from 'antd'
 import { CSSProperties, useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import { TCourse, TResponse, TResponseRedux } from '../../../types'
+import { TCourse, TResponseRedux } from '../../../types'
 import { courseManagementApi } from '../../../redux/features/admin/courseManagement.api'
 import PHForm from '../../../components/form/PHForm'
 import { FieldValues, SubmitHandler } from 'react-hook-form'
