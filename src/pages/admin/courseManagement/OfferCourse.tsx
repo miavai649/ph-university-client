@@ -8,8 +8,13 @@ import PHSelect from '../../../components/form/PHSelect'
 import PHInput from '../../../components/form/PHInput'
 import { daysOptions } from '../../../constants/global'
 import PHTimePicker from '../../../components/form/PHTimePicker'
+import PHSelectWithWatch from '../../../components/form/PHSelectWithWatch'
+import { useState } from 'react'
 
 const OfferCourse = () => {
+  const [courseId, setCourseId] = useState('')
+  console.log('🚀 ~ OfferCourse ~ courseId:', courseId)
+
   const { data: semesterRegistrationData } =
     courseManagementApi.useGetAllRegisteredSemestersQuery([
       { name: 'sort', value: 'year' },
@@ -77,7 +82,12 @@ const OfferCourse = () => {
             name='academicDepartment'
             options={academicDepartmentOptions}
           />
-          <PHSelect label='Course' name='course' options={courseOptions} />
+          <PHSelectWithWatch
+            label='Course'
+            onValueChange={setCourseId}
+            name='course'
+            options={courseOptions}
+          />
           <PHSelect label='Faculty' name='faculty' options={[]} />
           <PHInput label='Section' name='section' type='text' />
           <PHInput label='Max Capacity' name='maxCapacity' type='text' />

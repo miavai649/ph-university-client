@@ -56,3 +56,11 @@ export type TSelectProps = {
   options: { value: string; label: string; disabled?: boolean }[] | undefined
   mode?: 'multiple' | undefined
 }
+export type TSelectWithWatchProps = {
+  label: string
+  name: string
+  disabled?: boolean
+  options: { value: string; label: string; disabled?: boolean }[] | undefined
+  mode?: 'multiple' | undefined
+  onValueChange: React.Dispatch<React.SetStateAction<string>>
+}
