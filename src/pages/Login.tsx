@@ -1,4 +1,4 @@
-import { Button, Row } from 'antd'
+import { Button, Col, Divider, Row } from 'antd'
 import { FieldValues } from 'react-hook-form'
 import { useAppDispatch } from '../redux/hooks'
 import { setUser, TUserDecoded } from '../redux/features/auth/authSlice'
@@ -22,7 +22,7 @@ const Login = () => {
   }
 
   const onSubmit = async (data: FieldValues) => {
-    const toastId = toast.loading('Logging in')
+    const toastId = toast.loading('Logging in...')
     try {
       const userInfo = {
         id: data.userId,
@@ -34,7 +34,11 @@ const Login = () => {
 
       dispatch(setUser({ user, token: res.data.accessToken }))
       toast.success('Logged in', { id: toastId, duration: 2000 })
-      navigate(`/${user.role}/dashboard`)
+      if (res.data.needsPasswordChange) {
+        navigate(`/change-password`)
+      } else {
+        navigate(`/${user.role}/dashboard`)
+      }
     } catch (error) {
       toast.error('Something went wrong', { id: toastId, duration: 2000 })
     }
@@ -42,17 +46,28 @@ const Login = () => {
 
   return (
     <Row justify={'center'} align={'middle'} style={{ height: '100vh' }}>
-      <PHForm onSubmit={onSubmit} defaultValues={defaultValues}>
-        <PHInput type='text' name='userId' label='Id:' />
+      <Col>
+        <h1
+          style={{
+            fontSize: '2rem',
+            fontWeight: 600,
+            textAlign: 'center'
+          }}>
+          Log in
+        </h1>
+        <Divider />
+        <PHForm onSubmit={onSubmit} defaultValues={defaultValues}>
+          <PHInput type='text' name='userId' label='Id:' />
 
-        <PHInput type='text' name='password' label='Password:' />
+          <PHInput type='text' name='password' label='Password:' />
 
-        <Button
-          style={{ background: '#001529', color: 'white' }}
-          htmlType='submit'>
-          Submit
-        </Button>
-      </PHForm>
+          <Button
+            style={{ background: '#001529', color: 'white' }}
+            htmlType='submit'>
+            Submit
+          </Button>
+        </PHForm>
+      </Col>
     </Row>
   )
 }
